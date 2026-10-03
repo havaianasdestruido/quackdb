@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="build" content="dev">
+<title id="page-title">DuckDB Explorer</title>
+</head>
+<body>
+
+<a id="skip-link" href="#main">Skip to main content</a>
+
+<header>
+  <h1 id="app-title">DuckDB Explorer</h1>
+  <p id="app-tagline">Load CSV, Parquet or JSON files and explore them with SQL, entirely in your browser. Your data never leaves this device.</p>
+  <p>
+    <label for="lang-select" id="lang-label">Language</label>
+    <select id="lang-select">
+      <option value="en" lang="en">English</option>
+      <option value="pt-BR" lang="pt-BR">Português (Brasil)</option>
+      <option value="es" lang="es">Español</option>
+    </select>
+  </p>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <p><output id="status">Loading the DuckDB engine…</output></p>
+  <progress id="busy" aria-labelledby="status"></progress>
+
+  <blockquote id="error" role="alert" hidden>
+    <p id="error-text"></p>
+    <button type="button" id="retry-btn" hidden>Try again</button>
+  </blockquote>
+
+  <form id="app" onsubmit="return false;">
+
+    <fieldset id="files-panel" disabled>
+      <legend id="files-legend">Add files</legend>
+      <p id="files-help">Supported: CSV, TSV, Parquet, JSON and NDJSON. You can also drop files anywhere in this section.</p>
+      <div>
+        <label for="file-input" id="file-label">Choose data files</label>
+        <input type="file" id="file-input" multiple accept=".csv,.tsv,.txt,.parquet,.json,.jsonl,.ndjson" aria-describedby="files-help">
+        <button type="button" id="sample-btn"><span aria-hidden="true">✚</span> <span id="sample-btn-label">Load sample data</span></button>
+      </div>
+      <p id="drop-hint" hidden>Drop files to import them</p>
+    </fieldset>
+
+    <fieldset id="tables-panel" disabled>
+      <legend id="tables-legend" tabindex="-1">Tables</legend>
+      <p id="tables-empty">No tables yet. Add a file or load the sample data.</p>
+      <table id="tables-table" hidden>
+        <caption id="tables-caption">Loaded tables</caption>
+        <thead>
+          <tr>
+            <th scope="col" id="th-table">Table</th>
+            <th scope="col" id="th-rows">Rows</th>
+            <th scope="col" id="th-columns">Columns</th>
+            <th scope="col" id="th-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tables-body"></tbody>
+      </table>
+    </fieldset>
+
+    <fieldset id="search-panel" disabled>
+      <legend id="search-legend">Search</legend>
+      <div>
+        <label for="search-table" id="search-table-label">Table</label>
+        <select id="search-table"></select>
+        <label for="search-term" id="search-term-label">Find text in any column</label>
+        <input type="search" id="search-term" size="30" autocomplete="off">
+        <button type="button" id="search-btn">Search</button>
+      </div>
+    </fieldset>
+
+    <fieldset id="sql-panel" disabled>
+      <legend id="sql-legend">SQL query</legend>
+      <div>
+        <label for="sql-input" id="sql-label">SQL (DuckDB dialect)</label>
+      </div>
+      <textarea id="sql-input" rows="8" cols="70" spellcheck="false" autocapitalize="off" aria-describedby="sql-hint" aria-keyshortcuts="Control+Enter Meta+Enter">SELECT 'Hello, DuckDB!' AS greeting;</textarea>
+      <p id="sql-hint">Shortcut: Ctrl+Enter (Command+Enter on Mac)</p>
+      <div>
+        <button type="button" id="run-btn"><span aria-hidden="true">▶</span> <span id="run-btn-label">Run query</span></button>
+        <button type="button" id="clear-btn"><span aria-hidden="true">🗑</span> <span id="clear-btn-label">Clear</span></button>
+      </div>
+    </fieldset>
+
+    <fieldset id="results-panel" disabled>
+      <legend id="results-legend">Results</legend>
+      <p id="results-empty">Run a query to see results here.</p>
+      <p id="results-summary" hidden></p>
+      <p id="results-note" hidden></p>
+      <div>
+        <button type="button" id="export-csv-btn" disabled><span aria-hidden="true">⬇</span> <span id="export-csv-label">Export CSV</span></button>
+        <button type="button" id="export-json-btn" disabled><span aria-hidden="true">⬇</span> <span id="export-json-label">Export JSON</span></button>
+      </div>
+      <table id="results-table" hidden>
+        <caption id="results-caption">Query results</caption>
+        <thead id="results-head"></thead>
+        <tbody id="results-body"></tbody>
+      </table>
+    </fieldset>
+
+  </form>
+</main>
+
+<hr>
+
+<footer>
+  <p id="footer-privacy">Everything runs in your browser. Nothing is uploaded.</p>
+  <p><small id="footer-credit">Powered by DuckDB-WASM.</small></p>
+</footer>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
